@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Program | ICEODIS 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .pdf-viewer{width:100%; min-height:70vh; border:1px solid #ddd; border-radius:8px; background:#f9f9f9}
+    .pdf-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0 16px}
+    .btn{display:inline-block; padding:8px 12px; background:#005bbb; color:#fff; border-radius:6px; text-decoration:none}
+    .btn:focus{outline:3px solid #ffeb3b; outline-offset:2px}
+    .muted-note{color:#555; font-size:0.95rem}
+  </style>
+</head>
+<body>
+  <header id="site-header"></header>
+  <main class="container">
+    <div class="layout-2col">
+      <section id="page-main">
+        <h2 class="section-title">Program</h2>
+        <p class="muted">Below is the current version of the conference program. You can view it directly or open it in a new tab.</p>
+
+        <div class="pdf-actions">
+          <a class="btn" href="assets/files/Program.pdf" target="_blank" rel="noopener" title="Open Program PDF in new tab">Open in new tab</a>
+          <a href="assets/files/Program.pdf" download title="Download Program PDF">Download PDF</a>
+        </div>
+
+        <iframe class="pdf-viewer" src="assets/files/Program.pdf" title="ICEODIS 2026 Program PDF" aria-label="Embedded viewer for the conference program PDF"></iframe>
+        <p class="muted-note">If the program is not visible above, your browser may not support embedded PDFs. Please use the links to open or download the file.</p>
+      </section>
+      <aside id="common-content"></aside>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="main.js"></script>
+</body>
+</html>
