@@ -78,8 +78,8 @@ function renderFooter(){
         <div class="brand-wrap" style="margin-bottom:10px">
           <img src="assets/images/logo.png" alt="ICEODIS Logo" class="logo"/>
           <div class="brand">
-            <span class="brand-title">28-28 April</span></br>
-            <span class="brand-sub">Electronic, Optical Devices & Intelligent Systems</span>
+            <span class="brand-title">28-29 April</span></br>
+            <span class="brand-sub">International Conference on Electronic, Optical Devices & Intelligent Systems</span>
           </div>
         </div>
         <p class="foot-text">The 1 <sup> st</sup> edition of the International Conference on Electronic, Optical Devices and Intelligent Systems.</p>
