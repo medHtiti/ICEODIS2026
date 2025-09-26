@@ -52,25 +52,18 @@ function renderFooter(){
   if(!el) return;
   const year = new Date().getFullYear();
 
-  // Visitor counter using localStorage (client-side only)
-  // Increments once per browser session to avoid rapid reload inflation.
+  // Global visitor counter via PHP endpoint (once per session)
+  const sessionKey = 'iceodis_session_id';
+  let hasSession = false;
   try{
-    const sessionKey = 'iceodis_session_id';
-    const countKey = 'iceodis_visitor_count';
-    let sessionId = sessionStorage.getItem(sessionKey);
-    if(!sessionId){
-      // New session: increment total count
-      sessionId = Math.random().toString(36).slice(2);
-      sessionStorage.setItem(sessionKey, sessionId);
-      const current = parseInt(localStorage.getItem(countKey) || '0', 10) || 0;
-      localStorage.setItem(countKey, String(current + 1));
+    hasSession = !!sessionStorage.getItem(sessionKey);
+    if(!hasSession){
+      sessionStorage.setItem(sessionKey, Math.random().toString(36).slice(2));
+      hasSession = true;
     }
   }catch(e){ /* ignore storage errors (private mode, etc.) */ }
 
-  const totalVisitors = (()=>{
-    try{ return parseInt(localStorage.getItem('iceodis_visitor_count')||'0',10)||0; }catch(e){ return 0; }
-  })();
-
+  // Initial footer render with placeholder while fetching
   el.innerHTML=`
   <div class="container" xmlns="http://www.w3.org/1999/html">
     <div class="footer-grid">
@@ -83,9 +76,9 @@ function renderFooter(){
           </div>
         </div>
         <p class="foot-text">The 1 <sup> st</sup> edition of the International Conference on Electronic, Optical Devices and Intelligent Systems.</p>
-        <div class="foot-visitors" aria-live="polite" title="Local visitor counter (per browser)">
+        <div class="foot-visitors" aria-live="polite" title="Global visitor counter">
           <span class="foot-title" style="display:block;color:#ffeb3b;margin-bottom:4px">Visitors</span>
-          <span class="visitor-count" id="visitor-count">${totalVisitors.toLocaleString ? totalVisitors.toLocaleString() : totalVisitors}</span>
+          <span class="visitor-count" id="visitor-count">—</span>
         </div>
       </section>
 
@@ -123,6 +116,23 @@ function renderFooter(){
       <div class="motto">Advancing Knowledge Through Research</div>
     </div>
   </div>`;
+
+  // Fetch global count from PHP API (increment on first session only)
+  try{
+    const countEl = document.getElementById('visitor-count');
+    if(countEl){
+      const api = 'counter.php';
+      const method = hasSession ? 'GET' : 'POST';
+      fetch(api, { method })
+        .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+        .then(({ count }) => {
+          if (typeof count === 'number') {
+            countEl.textContent = (count.toLocaleString ? count.toLocaleString() : String(count));
+          }
+        })
+        .catch(()=>{ countEl.textContent = '—'; });
+    }
+  }catch(e){ /* ignore fetch errors */ }
 }
 
 renderHeader();
